@@ -58,7 +58,7 @@ git clone https://github.com/junsulee75/db2psconfig
 #### Go to the downloaded directory
 
 ```
-cd purescale_on_fyre
+cd db2psconfig
 ```
 
 ### 3. Run `0_osenv.sh`
