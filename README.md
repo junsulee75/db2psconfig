@@ -1,6 +1,5 @@
 # DB2 pureScale automated installation reference scripts  
 
-
 Scripts for Db2 pureScale installation and configuration orignially on IBM internal provisioned test systems.  
 
 For freedom to provision a pureScale system with just running a couple of commands with minimum intervention.  
@@ -14,10 +13,10 @@ Sharing these for users who are interested in automating the steps.
 - [DB2 pureScale automated installation reference scripts](#db2-purescale-automated-installation-reference-scripts)
   - [Contents](#contents)
   - [Steps](#steps)
-    - [1. Prepare systems](#1-prepare-systems)
+    - [1. Create system on Fyre](#1-create-system-on-fyre)
     - [2. Download the script](#2-download-the-script)
       - [Log in the 1st host](#log-in-the-1st-host)
-      - [Download scripts](#download-scripts)
+      - [Download the scripts or clone this repository to the 1st host](#download-the-scripts-or-clone-this-repository-to-the-1st-host)
       - [Go to the downloaded directory](#go-to-the-downloaded-directory)
     - [3. Run `0_osenv.sh`](#3-run-0_osenvsh)
     - [4. Run `setup.sh`](#4-run-setupsh)
@@ -27,20 +26,21 @@ Sharing these for users who are interested in automating the steps.
 
 
 ## Steps 
-### 1. Prepare systems 
+### 1. Create system on Fyre   
 
-Create VMs like below.    
+Prepare the systems.   
 
 - x86 
 - Redhat 7.9 or 8.8 only    
 - Size : Just select largest one. At least 8 GB memory for each host      
-- Quantity 5  ( 5 host VMs )  or 3 (3 hosts VMs)    
+- Quantity 5  ( 5 hosts VMs )  or 3 (3 hosts VMs)    
 
 > At the moment, this script only works with 5 or 3 hosts.   
 > 5 hosts : 1/2 members,  3/4 CFs and iscsi targe server for 5 to emulate storage.   
 > 3 hosts : Colocated 1 member/cf,  2 member/cf and iscsi targe server for 3 to emulate storage.   
 > In the future, planning to cover colocated pureScale/HADR with 5 hosts   
 > (primary cluster 1/2 colocated, standby cluster 3/4 colocated and iscsi targe server for 5 to emulate storage.)      
+
 
 ### 2. Download the script 
 
@@ -49,16 +49,12 @@ Create VMs like below.
 ssh root@xxx1.fyre.ibm.com    
 ```
 
-#### Download scripts
-
-```
-git clone https://github.com/junsulee75/db2psconfig
-```
+#### Download the scripts or clone this repository to the 1st host
 
 #### Go to the downloaded directory
 
 ```
-cd db2psconfig
+cd purescale_on_fyre
 ```
 
 ### 3. Run `0_osenv.sh`
@@ -70,13 +66,15 @@ This is for setting up environment for running the script such as python3 and de
 
 ### 4. Run `setup.sh`
 
-This will do everything until you pureScale instance.   
+This will do everything until you see the new pureScale instance.   
 
 ```
 ./setup.sh
 ```
 
-That's it.    
+That's it.   
+
+> Estimated tiem : 2 ~ 3 hours. ( All prereq. and Db2 install and configuration )   
 
 [Contents](#contents)    
 
@@ -101,12 +99,11 @@ Scripts assumes the following things.
 - These are written for Fyre environment usage only.    
 - Only install DB2 v11.5.8.0 on Redhat 7.9 or DB2 v11.5.9.0 on Redhat 8.8   
 - `yum` should be configured in advance.  
-- Passwordless root login should be set among hosts   
+- Passwordless root login should be set among hosts in advance.      
 - For now, only 3 or 5 hosts configurations are supported.    
 - hostname convention should be like xxx1, xxx2, xxx3, xxx4 and xxx5.  
 
 [Contents](#contents)    
-
 
 ## Compatibility  
 
@@ -137,6 +134,5 @@ Tested combinations.
 [TSA/GPFS version in DB2](https://pages.github.ibm.com/DB2/db2-dev-playbook/release/db2-dependent-product-level.html?highlight=TSA)     
 [iscsi target](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/8/html/managing_storage_devices/configuring-an-iscsi-target_managing-storage-devices)    
 [iscsi initiator](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/8/html/managing_storage_devices/configuring-an-iscsi-initiator_managing-storage-devices)   
-
 
 [Content](#contents)   

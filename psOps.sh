@@ -30,8 +30,9 @@ psStop(){
 	# Should set DB2INSTANCE variable  	
 	# https://www.ibm.com/support/pages/change-when-entering-purescale-maintenance-db2-v111-fp3  
 	# The DB2INSTANCE environment variable has not been set. Set the DB2INSTANCE environment variable to the instance name and re-issue the command
-	$DB2_INSTALL_PATH/bin/db2cluster -cm -enter -maintenance
-	$DB2_INSTALL_PATH/bin/db2cluster -cfs -enter -maintenance
+	$DB2_INSTALL_PATH/bin/db2cluster -cm -enter -maintenance -all   # error if not using -all option  
+	disp_msglvl2 "Enter CFS maintenance"
+	$DB2_INSTALL_PATH/bin/db2cluster -cfs -enter -maintenance -all 
 
 }
 
@@ -42,8 +43,9 @@ psStart(){
 	# Should set DB2INSTANCE variable  	
 	# https://www.ibm.com/support/pages/change-when-entering-purescale-maintenance-db2-v111-fp3  
 	# The DB2INSTANCE environment variable has not been set. Set the DB2INSTANCE environment variable to the instance name and re-issue the command
-	$DB2_INSTALL_PATH/bin/db2cluster -cm -exit -maintenance
-	$DB2_INSTALL_PATH/bin/db2cluster -cfs -exit -maintenance
+	$DB2_INSTALL_PATH/bin/db2cluster -cm -exit -maintenance -all
+	disp_msglvl2 "Exit CFS maintenance"
+	$DB2_INSTALL_PATH/bin/db2cluster -cfs -exit -maintenance -all 
 
 	for HOST in $pshost
 	do

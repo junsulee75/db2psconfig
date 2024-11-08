@@ -18,6 +18,9 @@ pureScale configuration :
 pureScal operations : 
     NOTE : MISC operation 
 
+    pureScale stop all nodes for maintenance : psOps.sh stop
+    pureScale start all nodes after maintenance : psOps.sh start
+    iscsi initiator configuration check : iscsiOps.sh check
     iscsi initiator configuration check : iscsiOps.sh check
     iscsi initiator restart : iscsiOps.sh restart
     iscsi disk initialize (Wipe out enough first blocks. Be careful !!)  : iscsiOps.sh zeroinit
