@@ -31,7 +31,7 @@ Sharing these for users who are interested in automating the steps.
 Prepare the systems.   
 
 - x86 
-- Redhat 7.9 or 8.8 only    
+- Redhat 7.9 / 8.8 / 9.2 only (8.10 is not supported for pureScale)     
 - Size : Just select largest one. At least 8 GB memory for each host      
 - Quantity 5  ( 5 hosts VMs )  or 3 (3 hosts VMs)    
 
@@ -74,7 +74,8 @@ This will do everything until you see the new pureScale instance.
 
 That's it.   
 
-> Estimated tiem : 2 ~ 3 hours. ( All prereq. and Db2 install and configuration )   
+> Estimated time : 2 ~ 3 hours. ( All prereq. and Db2 install and configuration )   
+> By default, it will install Db2 v11.5.8.0 on Redat 7.2, 11.5.9.0 on Redhat 8.8, 12.1.1.0 on Redhat 9.2    
 
 [Contents](#contents)    
 

@@ -34,18 +34,24 @@ pkgInstallPsHost(){
 # JSTODO : if kernel package need install  
 # JSTODO : if there is RoCE card.   
 
+# Prereq. packages only for RDMA environment. Not need for TCP/IP based
 IB_PREREQ="libibverbs librdmacm rdma-core dapl rdma-core dapl ibacm ibutils"   # only for RoCE or Infiniband users   
 IB_PREREQ88="libibverbs libibverbs-utils librdmacm librdmacm-utils rdma-core ibacm infiniband-diags iwpmd libibumad libpsm2 libpsm2-compat mstflint opa-address-resolution opa-basic-tools opa-fastfabric opa-libopamgt perftest qperf srp_daemon"   # only for RoCE or Infiniband users. Redhat 8.8
+IB_PREREQ92="$IB_PREREQ88" # same as Redhat 8.8 prereq. :  https://www.ibm.com/docs/en/db2/12.1?topic=linux-installation-prerequisites-db2-purescale-feature-intel
 
 KERNEL_VER=`uname -r`
-KERNEL_PREREQ="kernel-$KERNEL_VER kernel-devel-$KERNEL_VER kernel-headers-$KERNEL_VER"  # should be matched kernel version.   
+KERNEL_PREREQ="kernel-$KERNEL_VER kernel-devel-$KERNEL_VER kernel-headers-$KERNEL_VER"  # These should be matched kernel version. Hence add version suffix  
 
-REDHAT_79_PREREQ="$IB_PREREQ libstdc++ glibc gcc-c++ gcc $KERNEL_PREREQ linux-firmware ntp ntpdate sg3_utils sg3_utils-libs binutils binutils-devel m4 openssh cpp ksh libgcc libgomp make patch perl-Sys-Syslog mksh psmisc python3"    
-# save time if IB and RDMA is not necessary 
+# Prereq for TCP/IP only. List without packages for IB and RDMA.
 REDHAT_79_PREREQ_TCPIP="libstdc++ glibc gcc-c++ gcc $KERNEL_PREREQ linux-firmware ntp ntpdate sg3_utils sg3_utils-libs binutils binutils-devel m4 openssh cpp ksh libgcc libgomp make patch perl-Sys-Syslog mksh psmisc python3"  
+REDHAT_79_PREREQ="$IB_PREREQ $REDHAT_79_PREREQ_TCPIP"  # all packages for RDMA and TCP/IP 
 
-REDHAT_88_MISSING="perl perl-Net-Ping"  # The necessray packages that are not listed on KC   
+REDHAT_88_MISSING="perl perl-Net-Ping"  # The necessray packages that are not listed on KC. pureScale installation fails without this.    
 REDHAT_88_PREREQ_TCPIP="$REDHAT_79_PREREQ_TCPIP $REDHAT_88_MISSING file"    # 'file' is listed on KC to Redhat 7.9 Prereq
+PCMK_PREREQ="python3-dnf-plugin-versionlock" # install error for pacemaker : The db2prereqPCMK utility found that python3-dnf-plugin-versionlock package is not installed on the system. 
+#https://www.ibm.com/docs/en/db2/12.1?topic=pacemaker-prerequisites-integrated-solution-using
+
+REDHAT_92_PREREQ_TCPIP="$REDHAT_88_PREREQ_TCPIP $PCMK_PREREQ"    
 
 ## NOTE : TSA installlation fails if psmisc / mksh is missing   
 
@@ -56,6 +62,9 @@ if [[ "$ID" == "rhel" && "$VERSION_ID" == "7.9" ]]; then
     PREREQ_FINAL=$REDHAT_79_PREREQ_TCPIP
 elif [[ "$ID" == "rhel" && "$VERSION_ID" == "8.8" ]]; then
     PREREQ_FINAL=$REDHAT_88_PREREQ_TCPIP
+elif [[ "$ID" == "rhel" && "$VERSION_ID" == "9.2" ]]; then
+    #PREREQ_FINAL=$REDHAT_92_PREREQ_TCPIP
+    PREREQ_FINAL="$REDHAT_92_PREREQ_TCPIP $IB_PREREQ92" # V12.1 db2icrt still looks for rdma packages  
 fi
 
 disp_msglvl1 "Prereq. package installation for pureScale"   

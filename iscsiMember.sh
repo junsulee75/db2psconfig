@@ -117,3 +117,21 @@ getTargetIQN  # if fail on this, should exit
 confInit
 confPost
 startISCSIService
+
+## JSTODO : how to scan new and put name consistently : DONE ./iscsiOps.sh adddisk xxx 60 
+
+
+##### BACKUP comments.   
+# iscsiadm -m session --rescan;fdisk -l 
+# iscsiadm -m node -R # ?
+
+### Considering ways to fix disk name : Ignore this   
+# TARGET_DISK_NAME="tb111"
+# DEV=$(fdisk -l |grep -B 1 $TARGET_DISK_NAME |head -n 1 |awk '{print $2;}' |cut -d\/ -f3|cut -d\: -f1)
+# DEV_SERIAL=$(udevadm info --query=all --name=/dev/$DEV |grep "ID_SERIAL=" |cut -d\= -f2)
+# echo "SUBSYSTEM==\"block\", ENV{ID_SERIAL}==\"${DEV_SERIAL}\", SYMLINK+=\"disk_${TARGET_DISK_NAME}\"" >> /etc/udev/rules.d/99-iscsi.rules
+# cat /etc/udev/rules.d/99-iscsi.rules
+# udevadm control --reload-rules
+# udevadm trigger
+# iscsiadm -m session --rescan
+# fdisk -l

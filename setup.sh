@@ -11,6 +11,4 @@ menu.py 1,5,8    # setup iscsi target
 menu.py 1,6,8    # setup iscsi member clients
 menu.py 1,7,8    # create pureScale instance  
 
-#menu.py 2,1,3    # Db2wh image download
-#menu.py 2,2,3    # Db2wh 1st run 
 

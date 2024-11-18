@@ -1,6 +1,9 @@
 #!/usr/bin/python3
 '''
-Reusing Chee Hoe's python program : reading yaml for menu.   
+My revised version of Chee Hoe's python program : reading yaml for menu.   
+
+Jun Su revised.  
+Oct.27, 2024 : To remove the warning "SyntaxWarning: invalid escape sequence", added raw string 'r' in regular expression search. This warning happend on Ubuntu 24.04
 '''
 import yaml
 import random  # generating random number
@@ -86,7 +89,7 @@ def show_menu ( menu ):
         val = keystrokes.pop(0)
         global delay
         try :
-            match = re.search("(\d+)d(\d+)",val)
+            match = re.search(r"(\d+)d(\d+)",val)  # added raw string 
             val   = match[1]
             delay = match[2]
         except :
@@ -116,9 +119,9 @@ def run( cmd ) :
     '''
     look for [X]-[Y] - if exists , prompt of X, and if no input , set it to Y , otherwise set to input
     '''
-    found = re.findall("(\[.*?\]-\[.*?\])", cmd )
+    found = re.findall(r"(\[.*?\]-\[.*?\])", cmd )   # added raw string 
     for match in found:
-        (qn, ans) = re.findall("\[(.*)\]-\[(.*)\]", match)[0]
+        (qn, ans) = re.findall(r"\[(.*)\]-\[(.*)\]", match)[0]  # added raw string 
         val = input(f"{qn} [{ans}] : ")
         ans = val if (val) else ans
         cmd = re.sub(re.escape(match), ans, cmd )
@@ -171,7 +174,7 @@ def shellconfig ( file ) :
 # -----------------------------------------------------------------------------------------------------------
 def dollar_replace ( tstr ) :
 
-    found = re.findall("\$\{(.*?)\}", tstr )
+    found = re.findall(r"\$\{(.*?)\}", tstr )   # added raw string 
     for match in found:
         meta = "${" + match + "}"
         if match not in os.environ :

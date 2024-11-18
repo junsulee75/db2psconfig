@@ -12,11 +12,17 @@ netmonUpdate(){
 	for HOST in $pshost
 	do
 
-		disp_msglvl2 " $HOST : removing the line having the IP $IPADDR from /var/ct/cfg/netmon.cf "
-		ssh $SSH_NO_BANNER $HOST  "sed -i '/$IPADDR/d' /var/ct/cfg/netmon.cf"
-		disp_msglvl2 " $HOST : Add $IPADDR from /var/ct/cfg/netmon.cf "
-		ssh $SSH_NO_BANNER $HOST  "echo $NETMON_LINE >> /var/ct/cfg/netmon.cf"
-		ssh $SSH_NO_BANNER $HOST  "cat /var/ct/cfg/netmon.cf"
+		
+		ssh $SSH_NO_BANNER $HOST  "ls /var/ct/cfg/netmon.cf"
+		if [ $? -ne 0 ] ; then
+			print2 "$HOST : /var/ct/cfg/netmon.cf does not exist. Skipping This may be Db2 version 12.1 that does not install TSA/RSCT"
+		else 
+			disp_msglvl2 " $HOST : removing the line having the IP $IPADDR from /var/ct/cfg/netmon.cf "
+			ssh $SSH_NO_BANNER $HOST  "sed -i '/$IPADDR/d' /var/ct/cfg/netmon.cf"
+			disp_msglvl2 " $HOST : Add $IPADDR from /var/ct/cfg/netmon.cf "
+			ssh $SSH_NO_BANNER $HOST  "echo $NETMON_LINE >> /var/ct/cfg/netmon.cf"
+			ssh $SSH_NO_BANNER $HOST  "cat /var/ct/cfg/netmon.cf"
+		fi
 	done
 }
 

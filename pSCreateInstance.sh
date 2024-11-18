@@ -8,15 +8,15 @@ source jscommon.sh
 checkDisk(){
 
 	disp_msglvl1 "Checking shared iscsi disk information"   
-	
+
 	for HOST in $pshost
 	do
 		ssh $SSH_NO_BANNER $HOST fdisk -l |grep sda
 		if [ $? -ne 0 ]; then
-			disp_msglvl2 "$HOST : iscsi disk does not exist on $HOST. Exit.."
+			disp_msglvl2 "$HOST : iscsi data disk does not exist on $HOST. Exit.."
   		    exit 1 
 		else
-	 	   echo "$HOST : iscsi disk exists on $HOST. GOOD !!! "
+	 	   echo "$HOST : iscsi data disk exists on $HOST. GOOD !!! "
 		fi	
 	done
 }
@@ -60,9 +60,19 @@ pureScaleInstCreate(){
 		disp_msglvl1 "$NUM_PSHOST hosts are not supported in this script. Exit !!" 
 	fi
 
-	disp_msglvl2 "command to run : $DB2_INSTALL_PATH/instance/db2icrt -d -m $MEM0HOST -mnet $MEM0HOST -m $MEM1HOST -mnet $MEM1HOST -cf $CF128HOST -cfnet $CF128HOST -cf $CF129HOST -cfnet $CF129HOST -instance_shared_dev /dev/sda -tbdev $ISCSI_TARGET_IP -u db2fenc1 db2inst1"
-	disp_msglvl1 "Starting instance creation. Fingers crossed !! "  
-	$DB2_INSTALL_PATH/instance/db2icrt -d -m $MEM0HOST -mnet $MEM0HOST -m $MEM1HOST -mnet $MEM1HOST -cf $CF128HOST -cfnet $CF128HOST -cf $CF129HOST -cfnet $CF129HOST -instance_shared_dev /dev/sda -tbdev $ISCSI_TARGET_IP -u db2fenc1 db2inst1
+	if [[ "$ID" == "rhel" && "$VERSION_ID" == "9.2" ]]; then
+		# DB2 V12.1 : should not use -tbdev on Linux.  
+		CMD="$DB2_INSTALL_PATH/instance/db2icrt -d -m $MEM0HOST -mnet $MEM0HOST -m $MEM1HOST -mnet $MEM1HOST -cf $CF128HOST -cfnet $CF128HOST -cf $CF129HOST -cfnet $CF129HOST -instance_shared_dev /dev/sda -u db2fenc1 db2inst1" 
+		disp_msglvl2 "command to run : $CMD"
+		disp_msglvl1 "Starting instance creation. Fingers crossed !! "  
+		$CMD
+	else
+		CMD="$DB2_INSTALL_PATH/instance/db2icrt -d -m $MEM0HOST -mnet $MEM0HOST -m $MEM1HOST -mnet $MEM1HOST -cf $CF128HOST -cfnet $CF128HOST -cf $CF129HOST -cfnet $CF129HOST -instance_shared_dev /dev/sda -tbdev $ISCSI_TARGET_IP -u db2fenc1 db2inst1" 
+		disp_msglvl2 "command to run : $CMD"
+		disp_msglvl1 "Starting instance creation. Fingers crossed !! "  
+		$CMD
+	fi
+	# JSTODO : add $? check. 
 
 }
 
