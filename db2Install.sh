@@ -94,9 +94,10 @@ copyImage
 extractImage
 installDB2
 chkDb2Install
+applyLic
 
-if [[ "$ID" == "rhel" && "$VERSION_ID" == "9.2" ]]; then
-	print1 "DB2 V12.1 license is not ready yet. Apply the license later when you can get."
-else 
-	applyLic
-fi
+#if [[ "$ID" == "rhel" && "$VERSION_ID" == "9.2" ]]; then
+#	print1 "DB2 V12.1 license is not ready yet. Apply the license later when you can get."
+#else 
+#	applyLic
+#fi

@@ -18,8 +18,7 @@ Sharing these for users who are interested in automating the steps.
       - [Log in the 1st host](#log-in-the-1st-host)
       - [Download the scripts or clone this repository to the 1st host](#download-the-scripts-or-clone-this-repository-to-the-1st-host)
       - [Go to the downloaded directory](#go-to-the-downloaded-directory)
-    - [3. Run `0_osenv.sh`](#3-run-0_osenvsh)
-    - [4. Run `setup.sh`](#4-run-setupsh)
+    - [3. Run `install.sh`](#3-run-installsh)
     - [5. Enjoy](#5-enjoy)
   - [Restriction](#restriction)
   - [Compatibility](#compatibility)
@@ -54,22 +53,13 @@ ssh root@xxx1.fyre.ibm.com
 #### Go to the downloaded directory
 
 ```
-cd purescale_on_fyre
+cd db2psconfig
 ```
 
-### 3. Run `0_osenv.sh`
-
-This is for setting up environment for running the script such as python3 and dependent yaml libraries etc.  
-```
-./0_osenv.sh
-```
-
-### 4. Run `setup.sh`
-
-This will do everything until you see the new pureScale instance.   
+### 3. Run `install.sh`
 
 ```
-./setup.sh
+./install.sh
 ```
 
 That's it.   

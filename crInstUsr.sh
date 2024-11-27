@@ -30,8 +30,14 @@ chkInstUser(){
 		disp_msglvl2 "checking the instance user $INSTUSER on $HOST"
         ssh $SSH_NO_BANNER $HOST "sudo -u $INSTUSER touch /home/$INSTUSER/.profile"
         cmdRetChk
+		
 	done
 }
 
 createInstanceUser $INST_USER
 chkInstUser $INST_USER
+
+
+# JSTODO
+# PS1='$(whoami)@$(hostname -s):${PWD} $ '
+#set -o vi
