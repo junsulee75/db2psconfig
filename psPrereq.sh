@@ -62,9 +62,13 @@ if [[ "$ID" == "rhel" && "$VERSION_ID" == "7.9" ]]; then
     PREREQ_FINAL=$REDHAT_79_PREREQ_TCPIP
 elif [[ "$ID" == "rhel" && "$VERSION_ID" == "8.8" ]]; then
     PREREQ_FINAL=$REDHAT_88_PREREQ_TCPIP
-elif [[ "$ID" == "rhel" && "$VERSION_ID" == "9.2" ]]; then
-    #PREREQ_FINAL=$REDHAT_92_PREREQ_TCPIP
-    PREREQ_FINAL="$REDHAT_92_PREREQ_TCPIP $IB_PREREQ92" # V12.1 db2icrt still looks for rdma packages  
+elif [[ "$ID" == "rhel" && "$VERSION_ID" =~ ^(9.2|9.4)$ ]]; then
+    #PREREQ_FINAL="$REDHAT_92_PREREQ_TCPIP compat-openssl11" # for TCP/IP Only 
+    
+    # V12.1 db2icrt still looks for rdma packages. 
+    # 11.5.9.0 on RHEL 9.2 needs compat-openssl11 for TSA. Hope no harm to add this.   
+    PREREQ_FINAL="$REDHAT_92_PREREQ_TCPIP $IB_PREREQ92 compat-openssl11" 
+
 fi
 
 disp_msglvl1 "Prereq. package installation for pureScale"   

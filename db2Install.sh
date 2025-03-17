@@ -7,7 +7,7 @@ source jscommon.sh
 ##
 copyImage(){
 
-	disp_msglvl1 "Downloading DB2 installation image..."
+	disp_msglvl1 "Downloading DB2 installation image. |$DB2_IMAGE_FILE_NAME|"
 	## download to /root directory   
 	# old way using scp
 	#scp root@$DB2_IMAGE_DOWNLOAD_SERVER:$DB2_IMAGE_PATH_ON_SERVER/$DB2_IMAGE_FILE_NAME /root

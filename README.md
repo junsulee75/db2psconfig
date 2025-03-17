@@ -19,7 +19,6 @@ Sharing these for users who are interested in automating the steps.
       - [Download the scripts or clone this repository to the 1st host](#download-the-scripts-or-clone-this-repository-to-the-1st-host)
       - [Go to the downloaded directory](#go-to-the-downloaded-directory)
     - [3. Run `install.sh`](#3-run-installsh)
-    - [5. Enjoy](#5-enjoy)
   - [Restriction](#restriction)
   - [Compatibility](#compatibility)
 
@@ -30,7 +29,7 @@ Sharing these for users who are interested in automating the steps.
 Prepare the systems.   
 
 - x86 
-- Redhat 7.9 / 8.8 / 9.2 only (8.10 is not supported for pureScale)     
+- Redhat 7.9 / 8.8 / 9.2 / 9.4 only (8.10 is not supported for pureScale)     
 - Size : Just select largest one. At least 8 GB memory for each host      
 - Quantity 5  ( 5 hosts VMs )  or 3 (3 hosts VMs)    
 
@@ -65,21 +64,12 @@ cd db2psconfig
 That's it.   
 
 > Estimated time : 2 ~ 3 hours. ( All prereq. and Db2 install and configuration )   
-> By default, it will install Db2 v11.5.8.0 on Redat 7.2, 11.5.9.0 on Redhat 8.8, 12.1.1.0 on Redhat 9.2    
-
-[Contents](#contents)    
-
-### 5. Enjoy
-
-Once the previous script completes successfully, check the instance and create a database manually.   
+> By default, it will install Db2 v11.5.8.0 on Redat 7.2, 11.5.9.0 on Redhat 8.8, 12.1.0.0 on Redhat 9.2|9.4.      
+> If you really want to install V11.5.9.0 on RHEL 9.2, uncomment the option at the top of config.ini file.      
 
 ```
-su - db2inst1
-db2instance -list 
-db2 list db directory
-db2 create db testdb
-db2 activate db testdb
-db2 connect to testdb
+## uncomment only if you want to install Db2 11.5.9.0 on Redhat 9.2.   
+DB2VER="V1159"
 ```
 
 [Contents](#contents)    
@@ -88,7 +78,6 @@ db2 connect to testdb
 ## Restriction  
 Scripts assumes the following things.   
 - These are written for Fyre environment usage only.    
-- Only install DB2 v11.5.8.0 on Redhat 7.9 or DB2 v11.5.9.0 on Redhat 8.8   
 - `yum` should be configured in advance.  
 - Passwordless root login should be set among hosts in advance.      
 - For now, only 3 or 5 hosts configurations are supported.    
@@ -108,6 +97,7 @@ Tested combinations.
 
 | DB2 | GPFS | TSA  | Redhat kernel version | Red Hat Release |
 |:---------------:|:-----------------|:-----------------| :--------------------| :--------------------|
+|12.1.0.0 | 5.2.0.1 | N/A | 5.14.0-284.30.1.el9_2.x86_64 | RHEL 9.2 |
 |11.5.9.0 | 5.1.8.1 | 4.1.1.1 | 4.18.0-477.27.1.el8_8.x86_64 | RHEL 8.8 |
 |11.5.8.0 | 5.1.2.5 | 4.1.0.7+efix4|3.10.0-1160.114.2.el7.x86_64 | RHEL 7.9 |
 |11.5.8.0 | 5.1.2.5 | 4.1.0.7+efix4|3.10.0-1160.108.1.el7.x86_64 | RHEL 7.9 |

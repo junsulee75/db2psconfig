@@ -60,18 +60,28 @@ pureScaleInstCreate(){
 		disp_msglvl1 "$NUM_PSHOST hosts are not supported in this script. Exit !!" 
 	fi
 
+	# db2icrt command for pacemaker environment. no -tbdev option
+	PCMK_CMD="$DB2_INSTALL_PATH/instance/db2icrt -d -m $MEM0HOST -mnet $MEM0HOST -m $MEM1HOST -mnet $MEM1HOST -cf $CF128HOST -cfnet $CF128HOST -cf $CF129HOST -cfnet $CF129HOST -instance_shared_dev /dev/sda -u db2fenc1 db2inst1" 
+	# db2icrt command for TSA environment. -tbdev option 
+	TSA_CMD="$DB2_INSTALL_PATH/instance/db2icrt -d -m $MEM0HOST -mnet $MEM0HOST -m $MEM1HOST -mnet $MEM1HOST -cf $CF128HOST -cfnet $CF128HOST -cf $CF129HOST -cfnet $CF129HOST -instance_shared_dev /dev/sda -tbdev $ISCSI_TARGET_IP -u db2fenc1 db2inst1" 
+
 	if [[ "$ID" == "rhel" && "$VERSION_ID" == "9.2" ]]; then
-		# DB2 V12.1 : should not use -tbdev on Linux.  
-		CMD="$DB2_INSTALL_PATH/instance/db2icrt -d -m $MEM0HOST -mnet $MEM0HOST -m $MEM1HOST -mnet $MEM1HOST -cf $CF128HOST -cfnet $CF128HOST -cf $CF129HOST -cfnet $CF129HOST -instance_shared_dev /dev/sda -u db2fenc1 db2inst1" 
-		disp_msglvl2 "command to run : $CMD"
-		disp_msglvl1 "Starting instance creation. Fingers crossed !! "  
-		$CMD
+		# DB2 V12.1 : should not use -tbdev on Linux. 
+		if [[ "$DB2VER" == "V1159" ]]; then 
+			CMD="$TSA_CMD"
+		else 
+			CMD="$PCMK_CMD"
+		fi
+	elif [[ "$ID" == "rhel" && "$VERSION_ID" == "9.4" ]]; then
+		CMD="$PCMK_CMD"	
 	else
-		CMD="$DB2_INSTALL_PATH/instance/db2icrt -d -m $MEM0HOST -mnet $MEM0HOST -m $MEM1HOST -mnet $MEM1HOST -cf $CF128HOST -cfnet $CF128HOST -cf $CF129HOST -cfnet $CF129HOST -instance_shared_dev /dev/sda -tbdev $ISCSI_TARGET_IP -u db2fenc1 db2inst1" 
-		disp_msglvl2 "command to run : $CMD"
-		disp_msglvl1 "Starting instance creation. Fingers crossed !! "  
-		$CMD
+		CMD="$TSA_CMD"
 	fi
+
+	disp_msglvl2 "command to run : $CMD"
+	disp_msglvl1 "Starting instance creation. Fingers crossed !! "  
+	$CMD;cmdRetChk
+
 	# JSTODO : add $? check. 
 
 }
@@ -95,6 +105,7 @@ pureScaleInstChk(){
 }
 
 createSampleDB(){
+	print1 "create a sample database"
 	su - $INST_USER -c "db2instance -list"
 	if [ $? -eq 0 ] ; then
 		disp_msglvl2 " db2instance is normal status. Creating sample db. From now on, check things by yourself and do your preferred work manually. Enjoy !! "

@@ -15,9 +15,10 @@ pureScale configuration :
     setup iscsi member clients : iscsiMember.sh
     create a pureScale instance : pSCreateInstance.sh
 
-pureScal operations : 
+pureScale operations : 
     NOTE : MISC operation 
-
+    
+    Monitor pureScale instance creation : psInstCrtMon.sh
     pureScale stop all nodes for maintenance : psOps.sh stop
     pureScale start all nodes after maintenance : psOps.sh start
     iscsi initiator configuration check : iscsiOps.sh check

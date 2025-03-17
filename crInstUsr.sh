@@ -10,7 +10,7 @@ createInstanceUser(){
     INSTUSER=$1
 	for HOST in $pshost
 	do
-		disp_msglvl2 "create instance user on $HOST"
+		disp_msglvl2 "create instance user $INSTUSER and fenced user db2fenc1 on $HOST"
 		#ssh $SSH_NO_BANNER $HOST "groupadd -g 990 db2iadm1" # existing on fyre redhat 8.8
 		ssh $SSH_NO_BANNER $HOST "groupadd -g 888 db2iadm1"
 		#ssh $SSH_NO_BANNER $HOST "groupadd -g 989 db2fadm1" # existing on fyre redhat 8.8
